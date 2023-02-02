@@ -12,10 +12,12 @@ public class Main {
         GamePanel gamePanel = new GamePanel();
         frame.add(gamePanel);
         frame.pack();
+        gamePanel.setUpGame();
         gamePanel.startGameThread();
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
 
     }
 }
