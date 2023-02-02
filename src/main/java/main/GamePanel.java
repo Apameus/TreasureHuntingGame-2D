@@ -31,9 +31,10 @@ public class GamePanel extends JPanel implements Runnable{
     final long NANOS_PER_SECOND = Duration.ofSeconds(1).toNanos();
     final double DRAW_INTERVAL = (double) NANOS_PER_SECOND / fps;  // 0.016666 seconds
 
-    TileManager tileManager = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
     Thread gameThread;
+    KeyHandler keyH = new KeyHandler();
+    TileManager tileManager = new TileManager(this);
+    public CollisionChecker colChecker = new CollisionChecker(this);
     public Player player = new Player(this, keyH);
 
     public GamePanel() {
