@@ -7,11 +7,13 @@ import java.awt.image.BufferedImage;
 
 public class SuperObject {
 
-    BufferedImage image;
-    String name;
-    boolean collision = false;
-    public int worldX;
-    public int worldY;
+    public BufferedImage image;
+    public String name;
+    public boolean collision = false;
+    public int worldX, worldY;
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48) ;
+    public int solidAreaDefaultX, solidAreaDefaultY = 0;
+
 
     public void draw(Graphics2D g2, GamePanel gp){
         int screenX = worldX - gp.player.worldX + gp.player.screenX;

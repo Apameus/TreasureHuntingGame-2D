@@ -15,6 +15,7 @@ public class Player extends Entity{
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
+    int playerKeys = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -24,7 +25,8 @@ public class Player extends Entity{
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
         solidArea = new Rectangle(8,16,32,32);
-
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         setDefaultValues();
         getPlayerImage();
     }
@@ -75,6 +77,10 @@ public class Player extends Entity{
             collisionOn = false;
             gp.colChecker.checkTile(this);
 
+            // CHECK OBJECT COLLISION
+            int objIndex = gp.colChecker.checkObject(this, true);
+            pickUpObjects(objIndex);
+
             // IF COLLISION is FALSE, PLAYER CAN MOVE
             if (!collisionOn){
                 switch (direction){
@@ -96,13 +102,9 @@ public class Player extends Entity{
                 spriteCounter = 0;
             }
         }
-
-
     }
 
     public void draw(Graphics2D g2){
-//        g2.setColor(Color.RED);
-//        g2.fillRect(x, y, gp.tileSize, gp.tileSize);
 
         BufferedImage image = null;
         switch (direction){
@@ -124,5 +126,25 @@ public class Player extends Entity{
             }
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+
+    public void pickUpObjects(int i){
+        if (i != 999){
+            String objName = gp.obj[i].name;
+            switch (objName){
+                case "KEY" -> {
+                    playerKeys++;
+                    gp.obj[i] = null;
+                }
+                case "DOOR" -> {
+                    if (playerKeys > 0){
+                        gp.obj[i] = null;
+                        playerKeys--;
+
+                    }
+                }
+                case "CHEST" -> {}
+            }
+        }
     }
 }
