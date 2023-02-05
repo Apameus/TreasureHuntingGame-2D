@@ -15,7 +15,7 @@ public class Player extends Entity{
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
-    int playerKeys = 0;
+    public int playerKeys = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -136,6 +136,7 @@ public class Player extends Entity{
                     gp.playSE(1);
                     playerKeys++;
                     gp.obj[i] = null;
+                    gp.ui.showMessage("You got a key!");
                 }
                 case "DOOR" -> {
                     if (playerKeys > 0){
@@ -149,8 +150,13 @@ public class Player extends Entity{
                     gp.playSE(3);
                     speed += 2;
                     gp.obj[i] = null;
+                    gp.ui.showMessage("Speed Boost!");
                 }
-                case "CHEST" -> {}
+                case "CHEST" -> {
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();
+                    gp.playSE(2);
+                }
             }
         }
     }
