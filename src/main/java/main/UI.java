@@ -2,17 +2,13 @@ package main;
 
 import object.Key;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
 
 public class UI{
     //
-    GamePanel gp;
+    GameEngine gp;
     BufferedImage keyImage ;
     Font font_arial_40, font_arial_80B;
     //
@@ -26,7 +22,7 @@ public class UI{
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
 
-    public UI(GamePanel gp) {
+    public UI(GameEngine gp) {
         this.gp = gp;
         font_arial_40 = new Font("Arial", Font.PLAIN, 40);
         font_arial_80B = new Font("Arial", Font.BOLD, 80);

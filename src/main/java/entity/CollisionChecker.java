@@ -1,12 +1,13 @@
-package main;
+package entity;
 
 import entity.Entity;
+import main.GameEngine;
 
 public class CollisionChecker {
 
-    GamePanel gp;
+    GameEngine gp;
 
-    public CollisionChecker(GamePanel gp) {
+    public CollisionChecker(GameEngine gp) {
         this.gp = gp;
     }
 
@@ -24,7 +25,7 @@ public class CollisionChecker {
         int tileNum1, tileNum2;
 
         switch (entity.direction){
-            case "up" -> {
+            case UP -> {
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileManager.mapTileNumber[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileManager.mapTileNumber[entityRightCol][entityTopRow];
@@ -32,7 +33,7 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
             }
-            case "down" -> {
+            case DOWN -> {
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileManager.mapTileNumber[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileManager.mapTileNumber[entityRightCol][entityBottomRow];
@@ -40,7 +41,7 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
             }
-            case "left" -> {
+            case LEFT -> {
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileManager.mapTileNumber[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileManager.mapTileNumber[entityLeftCol][entityBottomRow];
@@ -48,7 +49,7 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
             }
-            case "right" -> {
+            case RIGHT -> {
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileManager.mapTileNumber[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileManager.mapTileNumber[entityRightCol][entityBottomRow];
@@ -72,19 +73,19 @@ public class CollisionChecker {
                 gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
                 gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
                 switch (entity.direction){
-                    case "up"  -> {
+                    case UP  -> {
                         entity.solidArea.y -= entity.speed;
                         index = getIndex(entity, player, index, i);
                     }
-                    case "down"  -> {
+                    case DOWN  -> {
                         entity.solidArea.y += entity.speed;
                         index = getIndex(entity, player, index, i);
                     }
-                    case "left"  -> {
+                    case LEFT  -> {
                         entity.solidArea.x -= entity.speed;
                         index = getIndex(entity, player, index, i);
                     }
-                    case "right"  -> {
+                    case RIGHT  -> {
                         entity.solidArea.x += entity.speed;
                         index = getIndex(entity, player, index, i);
                     }

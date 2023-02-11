@@ -1,7 +1,9 @@
 package entity;
 
-import main.GamePanel;
-import main.KeyHandler;
+import graphics.Control;
+import graphics.Input;
+import main.GameEngine;
+import desktop.KeyHandler;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,14 +12,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
+import static entity.Direction.*;
+import static graphics.Control.CONTROLS;
+
 public class Player extends Entity{
-    GamePanel gp;
+    GameEngine gp;
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
     public int playerKeys = 0;
 
-    public Player(GamePanel gp, KeyHandler keyH) {
+    public Player(GameEngine gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
 
@@ -35,7 +40,7 @@ public class Player extends Entity{
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         speed = 4;
-        direction = "down";
+        direction = DOWN;
     }
 
     public void getPlayerImage(){
@@ -57,49 +62,33 @@ public class Player extends Entity{
         return Objects.requireNonNull(getClass().getResourceAsStream(name));
     }
 
-    public void update(){
+    public void update(KeyHandler keyH){
 
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
-            if (keyH.upPressed){
-                direction = "up";
-            }
-            if (keyH.downPressed){
-                direction = "down";
-            }
-            if (keyH.leftPressed){
-                direction = "left";
-            }
-            if (keyH.rightPressed){
-                direction = "right";
-            }
+        for (Control control : CONTROLS) {
+            if (keyH.isActive(control)) {
 
-            // CHECK TILE COLLISION
-            collisionOn = false;
-            gp.colChecker.checkTile(this);
+                // CHECK TILE COLLISION
+                collisionOn = false;
+                gp.colChecker.checkTile(this);
 
-            // CHECK OBJECT COLLISION
-            int objIndex = gp.colChecker.checkObject(this, true);
-            pickUpObjects(objIndex);
+                // CHECK OBJECT COLLISION
+                int objIndex = gp.colChecker.checkObject(this, true);
+                pickUpObjects(objIndex);
 
-            // IF COLLISION is FALSE, PLAYER CAN MOVE
-            if (!collisionOn){
-                switch (direction){
-
-                    case "up" ->{worldY -= speed;}
-                    case "down" -> {worldY += speed;}
-                    case "left" -> {worldX -= speed;}
-                    case "right" -> {worldX += speed;}
+                // IF COLLISION is FALSE, PLAYER CAN MOVE
+                if (!collisionOn) {
+                    control.direction().move(this);
                 }
-            }
 
-            spriteCounter++;
-            if (spriteCounter > 12){
-                if (spriteNumber == 1){
-                    spriteNumber = 2;
-                } else if (spriteNumber == 2) {
-                    spriteNumber = 1;
+                spriteCounter++;
+                if (spriteCounter > 12) {
+                    if (spriteNumber == 1) {
+                        spriteNumber = 2;
+                    } else if (spriteNumber == 2) {
+                        spriteNumber = 1;
+                    }
+                    spriteCounter = 0;
                 }
-                spriteCounter = 0;
             }
         }
     }
@@ -108,19 +97,19 @@ public class Player extends Entity{
 
         BufferedImage image = null;
         switch (direction){
-            case "up" -> {
+            case UP -> {
                 if (spriteNumber == 1){ image = up1; }
                 else if (spriteNumber == 2) { image = up2; }
             }
-            case "down" -> {
+            case DOWN -> {
                 if (spriteNumber == 1){ image = down1; }
                 else if (spriteNumber == 2) { image = down2; }
             }
-            case "left" -> {
+            case LEFT -> {
                 if (spriteNumber == 1){ image = left1; }
                 else if (spriteNumber == 2) { image = left2; }
             }
-            case "right" -> {
+            case RIGHT -> {
                 if (spriteNumber == 1){ image = right1; }
                 else if (spriteNumber == 2) { image = right2; }
             }

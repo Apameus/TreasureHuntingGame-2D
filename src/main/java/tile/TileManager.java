@@ -1,13 +1,11 @@
 package tile;
 
-import main.GamePanel;
+import main.GameEngine;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -15,11 +13,11 @@ import java.util.Objects;
 
 public class TileManager {
 
-    GamePanel gp;
+    GameEngine gp;
     public Tile[] tile;
     public int[][] mapTileNumber;
 
-    public TileManager(GamePanel gp) {
+    public TileManager(GameEngine gp) {
         this.gp = gp;
         this.tile = new Tile[10];
         mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRaw];

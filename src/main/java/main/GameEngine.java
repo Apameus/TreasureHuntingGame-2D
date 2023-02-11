@@ -1,6 +1,10 @@
 package main;
 
+import desktop.KeyHandler;
+import desktop.SwingScreen;
+import entity.CollisionChecker;
 import entity.Player;
+import graphics.Screen;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -8,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.Duration;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GameEngine implements Runnable{
 
     // SCREEN SETTINGS
     final int originalTileSizes = 16; // 16x16 Tile
@@ -39,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
     Sound soundEffect = new Sound();
     KeyHandler keyH = new KeyHandler();
     Sound backgroundMusic = new Sound();
-    TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
     public AssetSetter assetSetter = new AssetSetter(this);
     public CollisionChecker colChecker = new CollisionChecker(this);
 
@@ -48,12 +52,17 @@ public class GamePanel extends JPanel implements Runnable{
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
 
-    public GamePanel() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        //this.setBackground(Color.BLACK);
-        this.setDoubleBuffered(true);
-        this.addKeyListener(keyH);
-        this.setFocusable(true);
+    public Screen screen;
+
+    public GameEngine(Screen screen) {
+//        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+//        this.setDoubleBuffered(true);
+//        this.addKeyListener(keyH);
+
+        setUpGame();
+        startGameThread();
+
+        this.screen = screen;
     }
     public void setUpGame(){
         assetSetter.setObject();
@@ -100,7 +109,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
-        player.update();
+        player.update(keyH);
     }
 
     @Override
@@ -141,5 +150,12 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void stopMusic(){
         backgroundMusic.stop();
+    }
+
+
+    public static void main(String[] args) {
+        SwingScreen screen = new SwingScreen(768, 576);
+        GameEngine gameEngine = new GameEngine(screen);
+
     }
 }
