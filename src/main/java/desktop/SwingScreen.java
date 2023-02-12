@@ -2,10 +2,11 @@ package desktop;
 
 import graphics.Input;
 import graphics.Screen;
-import main.GameEngine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
+import java.util.function.Consumer;
 
 public final class SwingScreen implements Screen {
 
@@ -40,16 +41,31 @@ public final class SwingScreen implements Screen {
 
     @Override
     public Input input() {
-        return null;
+        return keyH;
+    }
+
+    @Override
+    public void render(Consumer<Graphics2D> action) {
+        BufferStrategy buffer = canvas.getBufferStrategy();
+        do {
+            do {
+                Graphics2D graphics = (Graphics2D) buffer.getDrawGraphics();
+
+                action.accept(graphics);
+
+                graphics.dispose();
+            }while (buffer.contentsRestored());
+            buffer.show();
+        }while (buffer.contentsLost());
     }
 
     @Override
     public int width() {
-        return 0;
+        return canvas.getWidth();
     }
 
     @Override
     public int height() {
-        return 0;
+        return canvas.getHeight();
     }
 }

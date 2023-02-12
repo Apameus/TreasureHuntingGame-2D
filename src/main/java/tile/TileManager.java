@@ -1,6 +1,6 @@
 package tile;
 
-import main.GameEngine;
+import engine.GameEngine;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

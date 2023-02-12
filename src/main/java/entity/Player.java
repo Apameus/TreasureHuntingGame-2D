@@ -1,9 +1,9 @@
 package entity;
 
 import graphics.Control;
-import graphics.Input;
-import main.GameEngine;
+import engine.GameEngine;
 import desktop.KeyHandler;
+import graphics.Input;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -62,10 +62,10 @@ public class Player extends Entity{
         return Objects.requireNonNull(getClass().getResourceAsStream(name));
     }
 
-    public void update(KeyHandler keyH){
+    public void update(Input input){
 
         for (Control control : CONTROLS) {
-            if (keyH.isActive(control)) {
+            if (input.isActive(control)) {
 
                 // CHECK TILE COLLISION
                 collisionOn = false;
@@ -78,6 +78,7 @@ public class Player extends Entity{
                 // IF COLLISION is FALSE, PLAYER CAN MOVE
                 if (!collisionOn) {
                     control.direction().move(this);
+                    direction = control.direction();
                 }
 
                 spriteCounter++;

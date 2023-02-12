@@ -1,7 +1,6 @@
 package entity;
 
-import entity.Entity;
-import main.GameEngine;
+import engine.GameEngine;
 
 public class CollisionChecker {
 

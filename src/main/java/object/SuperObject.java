@@ -1,6 +1,6 @@
 package object;
 
-import main.GameEngine;
+import engine.GameEngine;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

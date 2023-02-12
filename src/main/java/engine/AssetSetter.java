@@ -1,4 +1,4 @@
-package main;
+package engine;
 
 import object.Boots;
 import object.Chest;
