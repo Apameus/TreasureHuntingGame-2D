@@ -2,7 +2,6 @@ package engine;
 
 import desktop.KeyHandler;
 import desktop.SwingScreen;
-import engine.loop.FrameBasedGameLoop;
 import engine.loop.GameLoop;
 import entity.CollisionChecker;
 import entity.Player;
@@ -10,24 +9,16 @@ import graphics.Screen;
 import object.SuperObject;
 import tile.TileManager;
 
-import java.time.Duration;
-
 public final class GameEngine{
 
     // SCREEN SETTINGS
     final int originalTileSizes = 16; // 16x16 Tile
-    final int scale = 3;
+    public final int tileSize = originalTileSizes * 3; // 48x48 Tile
+    public final int maxScreenRow = 16;
+    public final int maxScreenCol = 12;
+    public final int screenWidth = tileSize * maxScreenRow; // 768 pixels
+    public final int screenHeight = tileSize * maxScreenCol; // 576 pixels
 
-    public final int tileSize = originalTileSizes * scale; // 48x48 Tile
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
-
-    public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
-    public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
-
-    // WORLD SETTINGS
-    public final int maxWorldCol = 50;
-    public final int maxWorldRaw = 50;
 
 
     // SYSTEM
@@ -48,9 +39,6 @@ public final class GameEngine{
     public Screen screen;
 
     public GameEngine(Screen screen, GameLoop.Factory factory) {
-//        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-//        this.setDoubleBuffered(true);
-//        this.addKeyListener(keyH);
         this.screen = screen;
 
         gameLoop = factory.create(this::update, this::onRender);

@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
 import static entity.Direction.*;
@@ -44,22 +43,22 @@ public class Player extends Entity{
     }
 
     public void getPlayerImage(){
+            up1 = getImage("/player/boy_up_1.png");
+            up2 = getImage("/player/boy_up_2.png");
+            down1 = getImage("/player/boy_down_1.png");
+            down2 = getImage("/player/boy_down_2.png");
+            left1 = getImage("/player/boy_left_1.png");
+            left2 = getImage("/player/boy_left_2.png");
+            right1 = getImage("/player/boy_right_1.png");
+            right2 = getImage("/player/boy_right_2.png");
+    }
+
+    private BufferedImage getImage(String name) {
         try {
-            up1 = ImageIO.read(getInput("/player/boy_up_1.png"));
-            up2 = ImageIO.read(getInput("/player/boy_up_2.png"));
-            down1 = ImageIO.read(getInput("/player/boy_down_1.png"));
-            down2 = ImageIO.read(getInput("/player/boy_down_2.png"));
-            left1 = ImageIO.read(getInput("/player/boy_left_1.png"));
-            left2 = ImageIO.read(getInput("/player/boy_left_2.png"));
-            right1 = ImageIO.read(getInput("/player/boy_right_1.png"));
-            right2 = ImageIO.read(getInput("/player/boy_right_2.png"));
+            return ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(name)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private InputStream getInput(String name) {
-        return Objects.requireNonNull(getClass().getResourceAsStream(name));
     }
 
     public void update(Input input){

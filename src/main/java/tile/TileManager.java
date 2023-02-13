@@ -4,14 +4,19 @@ import engine.GameEngine;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class TileManager {
+
+    // WORLD SETTINGS
+    public final int maxWorldCol = 50;
+    public final int maxWorldRaw = 50;
 
     GameEngine gp;
     public Tile[] tile;
@@ -19,57 +24,76 @@ public class TileManager {
 
     public TileManager(GameEngine gp) {
         this.gp = gp;
-        this.tile = new Tile[10];
-        mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRaw];
+        this.tile = new Tile[50];
+        mapTileNumber = new int[maxWorldCol][maxWorldRaw];
 
-        getTileImage();
+        setTileImage();
         loadMap();
     }
 
-    private void getTileImage(){
+    private void setTileImage(){
 
-        tile[0] = new Tile();
-        tile[1] = new Tile();
-        tile[2] = new Tile();
-        tile[3] = new Tile();
-        tile[4] = new Tile();
-        tile[5] = new Tile();
+        set(10, "grass00", false);
+        set(11, "grass01", false);
+        set(12, "water00", true);
+        set(13, "water01", true);
+        set(14, "water02", true);
+        set(15, "water03", true);
+        set(16, "water04", true);
+        set(17, "water05", true);
+        set(18, "water06", true);
+        set(19, "water07", true);
+        set(20, "water08", true);
+        set(21, "water09", true);
+        set(22, "water10", true);
+        set(23, "water11", true);
+        set(24, "water12", true);
+        set(25, "water13", true);
+        set(26, "road00", false);
+        set(27, "road01", false);
+        set(28, "road02", false);
+        set(29, "road03", false);
+        set(30, "road04", false);
+        set(31, "road05", false);
+        set(32, "road06", false);
+        set(33, "road07", false);
+        set(34, "road08", false);
+        set(35, "road09", false);
+        set(36, "road10", false);
+        set(37, "road11", false);
+        set(38, "road12", false);
+        set(39, "earth", false);
+        set(40, "wall", true);
+        set(41, "tree", true);
+    }
+
+    private void set(int index, String name, boolean collision){
+        String fileName = "/tiles/" + name + ".png";
+        tile[index] = new Tile();
+        tile[index].image = getImage(fileName);
+        tile[index].collision = collision;
+    }
+
+    private BufferedImage getImage(String name) {
         try {
-            tile[0].image = ImageIO.read(getInput("/tiles/grass.png"));
-
-            tile[1].image = ImageIO.read(getInput("/tiles/wall.png"));
-            tile[1].collision = true;
-
-            tile[2].image = ImageIO.read(getInput("/tiles/water.png"));
-            tile[2].collision = true;
-
-            tile[3].image = ImageIO.read(getInput("/tiles/earth.png"));
-
-            tile[4].image = ImageIO.read(getInput("/tiles/tree.png"));
-            tile[4].collision = true;
-
-            tile[5].image = ImageIO.read(getInput("/tiles/sand.png"));
+            return ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(name)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private InputStream getInput(String name) {
-        return Objects.requireNonNull(getClass().getResourceAsStream(name));
-    }
-
     public void loadMap() {
-        List<String> lines = getAllLines("src/main/resources/maps/world1.txt");
+        List<String> lines = getAllLines("src/main/resources/maps/world2.txt");
 
         int col = 0;
         int row = 0;
         int i = 0;
 
-        while (row < gp.maxWorldRaw){
+        while (row < maxWorldRaw){
             String line = lines.get(i);
             String[] numbers = line.split(" ");
 
-            while (col < gp.maxWorldCol){
+            while (col < maxWorldCol){
                 int num = Integer.parseInt(numbers[col]);
                 mapTileNumber[col][row] = num;
                 col++;
@@ -84,7 +108,7 @@ public class TileManager {
         int worldCol = 0;
         int worldRow = 0;
 
-        while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRaw) {
+        while (worldCol < maxWorldCol && worldRow < maxWorldRaw) {
 
             int tileNum = mapTileNumber[worldCol][worldRow];
 
@@ -100,19 +124,14 @@ public class TileManager {
                     worldY - gp.tileSize < gp.player.worldY + gp.player.screenX){
 
                 g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-
             }
 
             worldCol++;
 
-
-            if (worldCol == gp.maxWorldCol) {
+            if (worldCol == maxWorldCol) {
                 worldCol = 0;
-
                 worldRow++;
-
             }
-
         }
     }
 
