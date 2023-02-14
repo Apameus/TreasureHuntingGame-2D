@@ -1,4 +1,4 @@
-package main;
+package engine;
 
 import object.Boots;
 import object.Chest;
@@ -6,9 +6,9 @@ import object.Door;
 import object.Key;
 
 public class AssetSetter {
-    GamePanel gp;
+    GameEngine gp;
 
-    public AssetSetter(GamePanel gp) {
+    public AssetSetter(GameEngine gp) {
         this.gp = gp;
     }
 

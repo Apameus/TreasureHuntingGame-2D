@@ -1,23 +1,27 @@
 package entity;
 
-import main.GamePanel;
-import main.KeyHandler;
+import graphics.Control;
+import engine.GameEngine;
+import desktop.KeyHandler;
+import graphics.Input;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
+import static entity.Direction.*;
+import static graphics.Control.CONTROLS;
+
 public class Player extends Entity{
-    GamePanel gp;
+    GameEngine gp;
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
     public int playerKeys = 0;
 
-    public Player(GamePanel gp, KeyHandler keyH) {
+    public Player(GameEngine gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
 
@@ -35,71 +39,57 @@ public class Player extends Entity{
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         speed = 4;
-        direction = "down";
+        direction = DOWN;
     }
 
     public void getPlayerImage(){
+            up1 = getImage("/player/boy_up_1.png");
+            up2 = getImage("/player/boy_up_2.png");
+            down1 = getImage("/player/boy_down_1.png");
+            down2 = getImage("/player/boy_down_2.png");
+            left1 = getImage("/player/boy_left_1.png");
+            left2 = getImage("/player/boy_left_2.png");
+            right1 = getImage("/player/boy_right_1.png");
+            right2 = getImage("/player/boy_right_2.png");
+    }
+
+    private BufferedImage getImage(String name) {
         try {
-            up1 = ImageIO.read(getInput("/player/boy_up_1.png"));
-            up2 = ImageIO.read(getInput("/player/boy_up_2.png"));
-            down1 = ImageIO.read(getInput("/player/boy_down_1.png"));
-            down2 = ImageIO.read(getInput("/player/boy_down_2.png"));
-            left1 = ImageIO.read(getInput("/player/boy_left_1.png"));
-            left2 = ImageIO.read(getInput("/player/boy_left_2.png"));
-            right1 = ImageIO.read(getInput("/player/boy_right_1.png"));
-            right2 = ImageIO.read(getInput("/player/boy_right_2.png"));
+            return ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(name)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private InputStream getInput(String name) {
-        return Objects.requireNonNull(getClass().getResourceAsStream(name));
-    }
+    public void update(Input input){
 
-    public void update(){
+        for (Control control : CONTROLS) {
+            if (input.isActive(control)) {
 
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
-            if (keyH.upPressed){
-                direction = "up";
-            }
-            if (keyH.downPressed){
-                direction = "down";
-            }
-            if (keyH.leftPressed){
-                direction = "left";
-            }
-            if (keyH.rightPressed){
-                direction = "right";
-            }
+                direction = control.direction();
 
-            // CHECK TILE COLLISION
-            collisionOn = false;
-            gp.colChecker.checkTile(this);
+                // CHECK TILE COLLISION
+                collisionOn = false;
+                gp.colChecker.checkTile(this);
 
-            // CHECK OBJECT COLLISION
-            int objIndex = gp.colChecker.checkObject(this, true);
-            pickUpObjects(objIndex);
+                // CHECK OBJECT COLLISION
+                int objIndex = gp.colChecker.checkObject(this, true);
+                pickUpObjects(objIndex);
 
-            // IF COLLISION is FALSE, PLAYER CAN MOVE
-            if (!collisionOn){
-                switch (direction){
-
-                    case "up" ->{worldY -= speed;}
-                    case "down" -> {worldY += speed;}
-                    case "left" -> {worldX -= speed;}
-                    case "right" -> {worldX += speed;}
+                // IF COLLISION is FALSE, PLAYER CAN MOVE
+                if (!collisionOn) {
+                    control.direction().move(this);
                 }
-            }
 
-            spriteCounter++;
-            if (spriteCounter > 12){
-                if (spriteNumber == 1){
-                    spriteNumber = 2;
-                } else if (spriteNumber == 2) {
-                    spriteNumber = 1;
+                spriteCounter++;
+                if (spriteCounter > 12) {
+                    if (spriteNumber == 1) {
+                        spriteNumber = 2;
+                    } else if (spriteNumber == 2) {
+                        spriteNumber = 1;
+                    }
+                    spriteCounter = 0;
                 }
-                spriteCounter = 0;
             }
         }
     }
@@ -108,19 +98,19 @@ public class Player extends Entity{
 
         BufferedImage image = null;
         switch (direction){
-            case "up" -> {
+            case UP -> {
                 if (spriteNumber == 1){ image = up1; }
                 else if (spriteNumber == 2) { image = up2; }
             }
-            case "down" -> {
+            case DOWN -> {
                 if (spriteNumber == 1){ image = down1; }
                 else if (spriteNumber == 2) { image = down2; }
             }
-            case "left" -> {
+            case LEFT -> {
                 if (spriteNumber == 1){ image = left1; }
                 else if (spriteNumber == 2) { image = left2; }
             }
-            case "right" -> {
+            case RIGHT -> {
                 if (spriteNumber == 1){ image = right1; }
                 else if (spriteNumber == 2) { image = right2; }
             }
@@ -143,7 +133,6 @@ public class Player extends Entity{
                         gp.playSE(4);
                         gp.obj[i] = null;
                         playerKeys--;
-
                     }
                 }
                 case "BOOTS" -> {
