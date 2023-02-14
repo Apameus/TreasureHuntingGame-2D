@@ -81,6 +81,7 @@ public class Player extends Entity{
                     control.direction().move(this);
                 }
 
+                // MOVING MOTION COUNTER
                 spriteCounter++;
                 if (spriteCounter > 12) {
                     if (spriteNumber == 1) {
@@ -94,6 +95,7 @@ public class Player extends Entity{
         }
     }
 
+    // MOVING MOTION
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
