@@ -33,25 +33,20 @@ public final class GameEngine{
 
     // ENTITY & OBJECT
     public Player player;
-    public SuperObject obj[] = new SuperObject[10];
+    public SuperObject[] obj = new SuperObject[10];
 
     public GameLoop gameLoop;
     public Screen screen;
 
     public GameEngine(Screen screen, GameLoop.Factory factory) {
         this.screen = screen;
-
         gameLoop = factory.create(this::update, this::onRender);
-
         player = new Player(this, keyH);
 
         setUpGame();
-
         gameLoop.start();
-
-//        startGameThread();
-
     }
+
     public void setUpGame(){
         assetSetter.setObject();
         playBackgroundMusic(0);

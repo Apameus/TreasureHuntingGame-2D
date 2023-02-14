@@ -9,7 +9,7 @@ public final class FrameBasedGameLoop implements GameLoop{
     final long NANOS_PER_SECOND = Duration.ofSeconds(1).toNanos();
     final double DRAW_INTERVAL = (double) NANOS_PER_SECOND / fps;  // 0.016666 seconds
 
-    public boolean shouldRun;
+    public static boolean shouldRun;
     private final Runnable onUpdate, onRender;
 
     public FrameBasedGameLoop(Runnable onUpdate, Runnable onRender) {

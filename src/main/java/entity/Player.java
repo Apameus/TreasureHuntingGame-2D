@@ -66,6 +66,8 @@ public class Player extends Entity{
         for (Control control : CONTROLS) {
             if (input.isActive(control)) {
 
+                direction = control.direction();
+
                 // CHECK TILE COLLISION
                 collisionOn = false;
                 gp.colChecker.checkTile(this);
@@ -77,7 +79,6 @@ public class Player extends Entity{
                 // IF COLLISION is FALSE, PLAYER CAN MOVE
                 if (!collisionOn) {
                     control.direction().move(this);
-                    direction = control.direction();
                 }
 
                 spriteCounter++;
@@ -132,7 +133,6 @@ public class Player extends Entity{
                         gp.playSE(4);
                         gp.obj[i] = null;
                         playerKeys--;
-
                     }
                 }
                 case "BOOTS" -> {

@@ -24,6 +24,7 @@ public class CollisionChecker {
 
         int tileNum1, tileNum2;
 
+
         switch (entity.direction){
             case UP -> {
                 entityTopCol = (entityTopWorldY - entity.speed) / gp.tileSize;

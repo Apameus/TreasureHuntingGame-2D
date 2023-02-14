@@ -1,5 +1,6 @@
 package engine;
 
+import engine.loop.FrameBasedGameLoop;
 import object.Key;
 
 import java.awt.*;
@@ -39,6 +40,7 @@ public class UI{
     public void draw(Graphics2D g2){
 
         if (gameFinished){
+            FrameBasedGameLoop.shouldRun = false;
             g2.setFont(font_arial_40);
             g2.setColor(Color.white);
 
