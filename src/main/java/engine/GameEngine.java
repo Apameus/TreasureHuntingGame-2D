@@ -12,35 +12,35 @@ import tile.TileManager;
 public final class GameEngine{
 
     // SCREEN SETTINGS
-    final int originalTileSizes = 16; // 16x16 Tile
-    public final int tileSize = originalTileSizes * 3; // 48x48 Tile
-    public final int maxScreenRow = 16;
-    public final int maxScreenCol = 12;
-    public final int screenWidth = tileSize * maxScreenRow; // 768 pixels
-    public final int screenHeight = tileSize * maxScreenCol; // 576 pixels
+    static final int originalTileSizes = 16; // 16x16 Tile
+    public static final int tileSize = originalTileSizes * 3; // 48x48 Tile
+    public static final int maxScreenRow = 16;
+    public static final int maxScreenCol = 12;
+    public static final int screenWidth = tileSize * maxScreenRow; // 768 pixels
+    public static final int screenHeight = tileSize * maxScreenCol; // 576 pixels
 
 
 
     // SYSTEM
-    public UI ui = new UI(this);
+    public UI ui = new UI();
     Sound soundEffect = new Sound();
     KeyHandler keyH = new KeyHandler();
     Sound backgroundMusic = new Sound();
-    public TileManager tileManager = new TileManager(this);
-    public AssetSetter assetSetter = new AssetSetter(this);
-    public CollisionChecker colChecker = new CollisionChecker(this);
+    public static TileManager tileManager = new TileManager();
+    public static AssetSetter assetSetter = new AssetSetter();
+    public static CollisionChecker colChecker = new CollisionChecker();
 
 
     // ENTITY & OBJECT
-    public Player player;
-    public SuperObject[] obj = new SuperObject[10];
+    public static Player player;
+    public static SuperObject[] obj = new SuperObject[10];
 
     public GameLoop gameLoop;
     public Screen screen;
 
     public GameEngine(Screen screen, GameLoop.Factory factory) {
         this.screen = screen;
-        gameLoop = factory.create(this::update, this::onRender);
+        gameLoop = factory.create(this::onUpdate, this::onRender);
         player = new Player(this, keyH);
 
         setUpGame();
@@ -52,7 +52,7 @@ public final class GameEngine{
         playBackgroundMusic(0);
     }
 
-    public void update(){
+    public void onUpdate(){
         player.update(screen.input());
     }
 
@@ -64,9 +64,9 @@ public final class GameEngine{
             tileManager.draw(graphics);
 
             // OBJECT
-            for (int i = 0; i < obj.length; i++) {
-                if (obj[i] != null){
-                    obj[i].draw(graphics, this);
+            for (SuperObject object : obj) {
+                if (object != null) {
+                    object.draw(graphics, this);
                 }
             }
 
@@ -97,9 +97,4 @@ public final class GameEngine{
     }
 
 
-    public static void main(String[] args) {
-        SwingScreen screen = new SwingScreen(768, 576);
-        GameEngine gameEngine = new GameEngine(screen, GameLoop::createFrameBasedGameLoop);
-
-    }
 }

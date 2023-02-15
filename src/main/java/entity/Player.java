@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static entity.Direction.*;
+import static engine.GameEngine.*;
 import static graphics.Control.CONTROLS;
 
 public class Player extends Entity{
@@ -25,8 +26,8 @@ public class Player extends Entity{
         this.gp = gp;
         this.keyH = keyH;
 
-        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
-        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+        screenX = screenWidth / 2 - (tileSize / 2);
+        screenY = screenHeight / 2 - (tileSize / 2);
 
         solidArea = new Rectangle(8,16,32,32);
         solidAreaDefaultX = solidArea.x;
@@ -36,8 +37,8 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues() {
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        worldX = tileSize * 23;
+        worldY = tileSize * 21;
         speed = 4;
         direction = DOWN;
     }
@@ -70,10 +71,10 @@ public class Player extends Entity{
 
                 // CHECK TILE COLLISION
                 collisionOn = false;
-                gp.colChecker.checkTile(this);
+                colChecker.checkTile(this);
 
                 // CHECK OBJECT COLLISION
-                int objIndex = gp.colChecker.checkObject(this, true);
+                int objIndex = colChecker.checkObject(this, true);
                 pickUpObjects(objIndex);
 
                 // IF COLLISION is FALSE, PLAYER CAN MOVE
@@ -81,6 +82,7 @@ public class Player extends Entity{
                     control.direction().move(this);
                 }
 
+                // MOVING MOTION COUNTER
                 spriteCounter++;
                 if (spriteCounter > 12) {
                     if (spriteNumber == 1) {
@@ -94,6 +96,7 @@ public class Player extends Entity{
         }
     }
 
+    // MOVING MOTION
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
@@ -115,30 +118,30 @@ public class Player extends Entity{
                 else if (spriteNumber == 2) { image = right2; }
             }
         }
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, tileSize, tileSize, null);
     }
 
     public void pickUpObjects(int i){
         if (i != 999){
-            String objName = gp.obj[i].name;
+            String objName = obj[i].name;
             switch (objName){
                 case "KEY" -> {
                     gp.playSE(1);
                     playerKeys++;
-                    gp.obj[i] = null;
+                    obj[i] = null;
                     gp.ui.showMessage("You got a key!");
                 }
                 case "DOOR" -> {
                     if (playerKeys > 0){
                         gp.playSE(4);
-                        gp.obj[i] = null;
+                        obj[i] = null;
                         playerKeys--;
                     }
                 }
                 case "BOOTS" -> {
                     gp.playSE(3);
                     speed += 2;
-                    gp.obj[i] = null;
+                    obj[i] = null;
                     gp.ui.showMessage("Speed Boost!");
                 }
                 case "CHEST" -> {

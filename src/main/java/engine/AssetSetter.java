@@ -1,48 +1,25 @@
 package engine;
 
-import object.Boots;
-import object.Chest;
-import object.Door;
-import object.Key;
+import object.*;
+
+import static engine.GameEngine.*;
 
 public class AssetSetter {
-    GameEngine gp;
-
-    public AssetSetter(GameEngine gp) {
-        this.gp = gp;
-    }
 
     public void setObject(){
-        gp.obj[0] = new Key();
-        gp.obj[0].worldX = 23 * gp.tileSize;
-        gp.obj[0].worldY = 7 * gp.tileSize;
-
-        gp.obj[1] = new Key();
-        gp.obj[1].worldX = 23 * gp.tileSize;
-        gp.obj[1].worldY = 40 * gp.tileSize;
-
-        gp.obj[2] = new Key();
-        gp.obj[2].worldX = 38 * gp.tileSize;
-        gp.obj[2].worldY = 8 * gp.tileSize;
-
-        gp.obj[3] = new Door();
-        gp.obj[3].worldX = 10 * gp.tileSize;
-        gp.obj[3].worldY = 11 * gp.tileSize;
-
-        gp.obj[4] = new Door();
-        gp.obj[4].worldX = 8 * gp.tileSize;
-        gp.obj[4].worldY = 28 * gp.tileSize;
-
-        gp.obj[5] = new Door();
-        gp.obj[5].worldX = 12 * gp.tileSize;
-        gp.obj[5].worldY = 22 * gp.tileSize;
-
-        gp.obj[6] = new Chest();
-        gp.obj[6].worldX = 10 * gp.tileSize;
-        gp.obj[6].worldY = 7 * gp.tileSize;
-
-        gp.obj[7] = new Boots();
-        gp.obj[7].worldX = 37 * gp.tileSize;
-        gp.obj[7].worldY = 42 * gp.tileSize;
+        set(0, new Key(), 23, 7);
+        set(1, new Key(), 23, 40);
+        set(2, new Key(), 38, 8);
+        set(3, new Door(), 10, 12);
+        set(4, new Door(), 8, 28);
+        set(5, new Door(), 12, 23);
+        set(6, new Chest(), 10, 9);
+        set(7, new Boots(), 37, 42);
     }
+    private void set(int index, SuperObject object, int worldX, int worldY){
+        obj[index] = object;
+        obj[index].worldX = worldX * tileSize;
+        obj[index].worldY = worldY * tileSize;
+    }
+
 }
