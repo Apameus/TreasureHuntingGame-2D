@@ -12,18 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static engine.GameEngine.tileSize;
+
 public class TileManager {
 
     // WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRaw = 50;
-
-    GameEngine gp;
     public Tile[] tile;
     public int[][] mapTileNumber;
 
-    public TileManager(GameEngine gp) {
-        this.gp = gp;
+    public TileManager() {
         this.tile = new Tile[50];
         mapTileNumber = new int[maxWorldCol][maxWorldRaw];
 
@@ -112,18 +111,18 @@ public class TileManager {
 
             int tileNum = mapTileNumber[worldCol][worldRow];
 
-            int worldX = worldCol * gp.tileSize;
-            int worldY = worldRow * gp.tileSize;
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            int worldX = worldCol * tileSize;
+            int worldY = worldRow * tileSize;
+            int screenX = worldX - GameEngine.player.worldX + GameEngine.player.screenX;
+            int screenY = worldY - GameEngine.player.worldY + GameEngine.player.screenY;
 
             // Magical performer increase
-            if (    worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenX &&
-                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenX){
+            if (    worldX + tileSize > GameEngine.player.worldX - GameEngine.player.screenX &&
+                    worldX - tileSize < GameEngine.player.worldX + GameEngine.player.screenX &&
+                    worldY + tileSize > GameEngine.player.worldY - GameEngine.player.screenX &&
+                    worldY - tileSize < GameEngine.player.worldY + GameEngine.player.screenX){
 
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tile[tileNum].image, screenX, screenY, tileSize, tileSize, null);
             }
 
             worldCol++;

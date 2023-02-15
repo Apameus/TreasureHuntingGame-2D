@@ -22,18 +22,18 @@ public final class GameEngine{
 
 
     // SYSTEM
-    public UI ui = new UI(this);
+    public UI ui = new UI();
     Sound soundEffect = new Sound();
     KeyHandler keyH = new KeyHandler();
     Sound backgroundMusic = new Sound();
-    public TileManager tileManager = new TileManager(this);
-    public AssetSetter assetSetter = new AssetSetter(this);
-    public CollisionChecker colChecker = new CollisionChecker(this);
+    public static TileManager tileManager = new TileManager();
+    public static AssetSetter assetSetter = new AssetSetter();
+    public static CollisionChecker colChecker = new CollisionChecker();
 
 
     // ENTITY & OBJECT
-    public Player player;
-    public SuperObject[] obj = new SuperObject[10];
+    public static Player player;
+    public static SuperObject[] obj = new SuperObject[10];
 
     public GameLoop gameLoop;
     public Screen screen;
@@ -64,9 +64,9 @@ public final class GameEngine{
             tileManager.draw(graphics);
 
             // OBJECT
-            for (int i = 0; i < obj.length; i++) {
-                if (obj[i] != null){
-                    obj[i].draw(graphics, this);
+            for (SuperObject object : obj) {
+                if (object != null) {
+                    object.draw(graphics, this);
                 }
             }
 

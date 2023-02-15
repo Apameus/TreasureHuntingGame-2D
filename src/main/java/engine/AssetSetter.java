@@ -2,12 +2,9 @@ package engine;
 
 import object.*;
 
-public class AssetSetter {
-    GameEngine gp;
+import static engine.GameEngine.*;
 
-    public AssetSetter(GameEngine gp) {
-        this.gp = gp;
-    }
+public class AssetSetter {
 
     public void setObject(){
         set(0, new Key(), 23, 7);
@@ -20,9 +17,9 @@ public class AssetSetter {
         set(7, new Boots(), 37, 42);
     }
     private void set(int index, SuperObject object, int worldX, int worldY){
-        gp.obj[index] = object;
-        gp.obj[index].worldX = worldX * gp.tileSize;
-        gp.obj[index].worldY = worldY * gp.tileSize;
+        obj[index] = object;
+        obj[index].worldX = worldX * tileSize;
+        obj[index].worldY = worldY * tileSize;
     }
 
 }
